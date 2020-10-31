@@ -47,6 +47,14 @@
 #define NDEBUG
 #endif
 
+#ifndef PROJECT_NAME
+#cmakedefine PROJECT_NAME "@PROJECT_NAME@"
+#endif
+
+#ifndef PROJECT_VERSION
+#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
+#endif
+
 #endif /** DEBUG */
 
 #if defined(WIN32) || (_WIN32)
@@ -60,5 +68,62 @@
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
+
+/**
+ * Check whether two strings match
+ *
+ * This function uses the C standard library strcmp(3)
+ * function, but adds an additional layer of indirection for
+ * semantic clarity. The strcmp(3) function confuses some
+ * developers, since the fact that the function returns 0
+ * when the strings do match can seem backwards. The
+ * strcmp(3) function performs a lexicographical comparison,
+ * returning the difference between the two string. This is
+ * why a return value of zero means the strings are equal.
+ * To save everyone the potential confusion, this function
+ * handles the actual call to strcmp(3) instead.
+ *
+ * @param char* a The first string to compare
+ * @param char* b The other string to compare
+ *
+ * @returns True when the strings match, as determined by
+ * the C standard library's strcmp(3) function.
+ *
+ * @note The specificity of the remark above regarding the C
+ * standard library's strcmp(3) function being the decider
+ * of whether the given strings match is significant,
+ * because strcmp(3) does not consider differences from the
+ * locale.
+ *
+ * @remark For locale-aware comparisons, the strcoll(3)
+ * function would be required.
+ * 
+ */
+int strings_match(const char* a, const char* b) {
+    return strcmp(a,b) == 0;
+}
+
+/**
+ * Program version format string
+ *
+ * This is the format string to be passed in by each program
+ * to their respective 'print version information' function.
+ * The version string begins with a '%s' format specifier
+ * which requires the calling programs to pass in their
+ * name as the second argument to printf(3) when they call
+ * the function.
+ *
+ */
+const char* program_version =
+"%s (" PROJECT_NAME ") " PROJECT_VERSION "\n"
+"Copyright (C) Jose Fernando Lopez Fernandez, 2020.\n"
+"License GPLv3+: GNU GPL version 3 or later\n"
+"<https://gnu.org/licenses/gpl.html>.\n"
+"\n"
+"This is free software: you are free to change and\n"
+"redistribute it.\n"
+"There is NO WARRANTY, to the extent permitted by law.\n"
+"\n"
+"Written by Jose Fernando Lopez Fernandez.\n";
 
 #endif /** PROJECT_INCLUDES_CONFIG_H */
