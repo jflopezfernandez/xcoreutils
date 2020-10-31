@@ -11,12 +11,34 @@ PROJECT(xcoreutils
         C
 )
 
-SET(CMAKE_CONFIGURATION_TYPES "Release" "Debug")
-
+# Enable debugging-specific settings and compilation options
+#
+# This setting defines the DEBUG preprocessor macro, which
+# does several things.
+#
+# First, the presence of this macro disables the NDEBUG
+# macro, so all runtime assert statements within the project
+# are executed.
+#
+# Second, the verbosity of the program output(s) is
+# significantly higher than it would be otherwise, to allow
+# for easier program execution tracing.
+#
+# And finally, sub-project compilation settings are modified
+# in a platform- and compiler-specific way, requesting
+# detailed debugging information from the compiler, and
+# invoking additional compiler-specific diagnostics and
+# analyzer utilities.
+#
 OPTION(DEBUG "Enable debugging options and code." OFF)
 
-MESSAGE(STATUS "Debugging options and code: ${DEBUG}")
-
+# Process the project-wide include directory.
+#
+# This directory contains the top-level configuration file
+# in which system- and configuration-specific settings and
+# values are set, making them available to all of the sub-
+# projects during compilation.
+#
 ADD_SUBDIRECTORY(include)
 
 SET(UTILITIES
