@@ -1,4 +1,5 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.18 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
+CMAKE_POLICY(SET CMP0048 NEW)
 PROJECT(xcoreutils
     VERSION
         1.0.1.1
@@ -11,6 +12,10 @@ PROJECT(xcoreutils
 )
 
 SET(CMAKE_CONFIGURATION_TYPES "Release" "Debug")
+
+OPTION(DEBUG "Enable debugging options and code." OFF)
+
+MESSAGE(STATUS "Debugging options and code: ${DEBUG}")
 
 ADD_SUBDIRECTORY(include)
 
